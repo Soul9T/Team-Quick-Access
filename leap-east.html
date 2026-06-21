@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LEAP EAST — Team Quick Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090d; --bg2:#101420; --card:#151b29; --muted:#9ca6b7; --text:#f6f8fb;
+    --accent1:#6df2ff; --accent2:#7c5cff; --gold:#d7b765; --border:#273044; --danger:#ff5b68;
+    --ring:0 0 0 2px rgba(109,242,255,.22),0 0 28px rgba(124,92,255,.18);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:
+    radial-gradient(1100px 620px at 85% -8%, rgba(109,242,255,.18), transparent 55%),
+    radial-gradient(900px 620px at -10% 105%, rgba(124,92,255,.16), transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));min-height:100vh}
+  .wrap{max-width:1120px;margin:32px auto;padding:0 18px 40px}
+  header{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+  h1{margin:0;font-size:clamp(24px,4vw,36px);line-height:1.05}
+  .accent{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .note{color:var(--muted);font-size:13px;margin-top:7px}
+  nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  nav a{color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:#101522;transition:all .2s}
+  nav a:hover{box-shadow:var(--ring);color:#fff}
+  nav a.active{color:#081018;border:1px solid transparent;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
+  .toolbar{display:flex;gap:8px;margin:16px 0 8px;flex-wrap:wrap}
+  .btn{border:1px solid var(--border);background:#101522;color:var(--text);padding:9px 12px;border-radius:11px;cursor:pointer}
+  .btn:hover{box-shadow:var(--ring)}
+  .page{margin-top:10px}.hide{display:none}
+  .accordion{display:grid;gap:14px}
+  details{border:1px solid transparent;border-radius:17px;overflow:hidden;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg, rgba(109,242,255,.82), rgba(124,92,255,.88)) border-box;transition:transform .12s}
+  details:hover{transform:translateY(-1px)}
+  details.danger{background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg, rgba(255,91,104,.92), rgba(215,183,101,.88)) border-box}
+  summary{list-style:none;padding:18px 22px;cursor:pointer;display:flex;align-items:center;gap:12px;font-weight:800;user-select:none}
+  summary::-webkit-details-marker{display:none}
+  .chev{flex:0 0 22px;height:22px;border-radius:6px;border:1px solid var(--border);display:grid;place-items:center;transition:transform .18s;background:linear-gradient(180deg,#1d2536,#111827)}
+  .chev svg{width:14px;height:14px} details[open] .chev{transform:rotate(90deg)}
+  .panel{padding:0 22px 22px}
+  ul.list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+  .row{display:flex;align-items:flex-start;gap:10px;border:1px dashed var(--border);border-radius:12px;padding:10px 12px;background:#0f1522}
+  .label{font-weight:800;letter-spacing:.2px;min-width:110px}
+  .vals{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+  .pill{background:#121b2c;border:1px solid var(--border);border-radius:999px;padding:3px 9px;font-size:13px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+  .chip{margin-left:auto;font-size:12px;border:1px solid var(--border);padding:3px 8px;border-radius:999px;cursor:pointer;background:#101522;color:#dfe6ee}
+  .chip.good{border-color:var(--accent1);color:#081018;background:var(--accent1)}
+  .hero{display:grid;gap:12px;margin:10px 0 12px}
+  .search-big{width:100%;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:#111827;color:var(--text);font-size:18px}
+  .search-big:focus{outline:none;box-shadow:var(--ring)}
+  .map-card{border:1px dashed var(--border);border-radius:14px;background:#0f1522;padding:18px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+  th{color:var(--muted);font-weight:600}
+  tr.off{display:none}
+  ol.top10{margin:8px 0 0 22px}
+  ol.top10 li{padding:10px 8px;border-bottom:1px dashed var(--border)}
+  ol.top10 li:last-child{border-bottom:none}
+  .stats-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:106px;gap:12px;margin-top:12px}
+  .stat{background:#0f1522;border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;justify-content:center;padding:16px 18px}
+  .knum{font-size:28px;font-weight:800;line-height:1}.lbl{font-size:12px;color:var(--muted);margin-top:6px}
+  .span-2{grid-column:span 2}.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}
+  @media(max-width:740px){.stats-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:96px}.span-6,.span-5,.span-4,.span-3,.span-2{grid-column:span 3}}
+  @media(max-width:540px){html{font-size:13.5px}.wrap{margin:24px auto;padding:0 14px 28px}h1{font-size:22px}.note{font-size:11.5px}nav a{padding:7px 10px;font-size:12.5px}summary{padding:13px 14px;font-size:14px}.panel{padding:0 14px 13px}.row{padding:8px 9px;gap:7px}.label{min-width:92px}.pill{font-size:10.8px;padding:2px 7px}.search-big{font-size:15px;padding:12px 14px}th,td{font-size:12.5px;padding:9px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1><span class="accent">LEAP EAST</span> — Team Quick Access</h1>
+      <div class="note">Mobile-first internal quick reference. Last updated: 22 Jun 2026.</div>
+    </div>
+    <nav id="nav">
+      <a data-page="pocs" class="active" href="#pocs">POCs & Ops</a>
+      <a data-page="areas" href="#areas">Area Map</a>
+      <a data-page="top10s" href="#top10s">Top 10s</a>
+    </nav>
+  </header>
+
+  <div class="toolbar" id="toolbar">
+    <button class="btn" id="expandAll">Expand all</button>
+    <button class="btn" id="collapseAll">Collapse all</button>
+  </div>
+
+  <section id="pocs" class="page">
+    <div class="accordion" id="pocsAcc"></div>
+  </section>
+
+  <section id="areas" class="page hide">
+    <div class="hero">
+      <input id="searchAreas" class="search-big" type="search" placeholder="Search areas, halls, locations…" />
+      <div class="map-card">Floorplan/map placeholder. Add <strong>leap-east-floorplan.png</strong> to the repo root later, then replace this card with an image.</div>
+      <span class="note">Results below are A→Z. Update the area list directly in the HTML content section.</span>
+    </div>
+    <table id="areasTable">
+      <thead><tr><th>AREA / FEATURE</th><th>HALL / ZONE</th><th>LOCATION</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="top10s" class="page hide">
+    <section class="accordion" id="topAcc"></section>
+  </section>
+</div>
+
+<script>
+const POCS = {
+  wifi: `
+Staff WiFi — TBC
+Password — TBC
+Public WiFi — TBC
+Password — TBC
+Staff access / BOH codes — TBC
+`,
+  critical: `
+Emergency / Medical — TBC
+Lost & Found — TBC
+Command Centre / Organizer Office — TBC
+Registration Escalation — TBC
+Security Escalation — TBC
+`,
+  timings: `
+Show Open — TBC
+Show Close — TBC
+Content Starts — TBC
+Content Ends — TBC
+Team Call Time — TBC
+`,
+  stages: `
+Main Stage — TBC
+Content / Speaker Desk — TBC
+Speaker Holding — TBC
+Speaker Green Room — TBC
+Media / Interview Room — TBC
+`,
+  ops: `
+Venue Management — TBC
+Catering — TBC
+Cleaning — TBC
+Security — TBC
+Ushers / Crowd Management — TBC
+Registration — TBC
+Internet — TBC
+Power / Rigging — TBC
+Furniture — TBC
+Traffic / Parking / Shuttles — TBC
+Signage / Branding — TBC
+`,
+  protocol: `
+VIP / Protocol Lead — TBC
+Government / Delegation Support — TBC
+VIP Majlis / Lounge — TBC
+VIP Tours — TBC
+Escalation — TBC
+`,
+  logistics: `
+Speaker Logistics — TBC
+Investor Logistics — TBC
+Travel / Hotel Desk — TBC
+Airport / Transfer Escalation — TBC
+`,
+  marketing: `
+Registration / Ticketing — TBC
+Digital Ops / App — TBC
+Marketing Desk — TBC
+Media Desk — TBC
+Social / Content Capture — TBC
+`,
+  locations: `
+Organizer Office — TBC
+Medical Room — TBC
+Prayer Room — TBC
+Cloakroom — TBC
+Lost & Found — TBC
+Speaker Check-in — TBC
+VIP Entrance — TBC
+Staff Entrance — TBC
+`
+};
+
+const POC_META = [
+  ['wifi','WiFi & Access'],
+  ['critical','Critical Info', true],
+  ['timings','Event Timings'],
+  ['stages','Stages & Content'],
+  ['ops','Ops POCs'],
+  ['protocol','Protocol / VIP POCs'],
+  ['logistics','Speaker / Investor Logistics'],
+  ['marketing','Marketing / Reg / Digital Ops'],
+  ['locations','Key Locations']
+];
+
+const AREAS_DATA = [
+  ['Command Centre / Organizer Office','TBC','TBC'],
+  ['Information Desk','TBC','TBC'],
+  ['Lost & Found','TBC','TBC'],
+  ['Main Stage','TBC','TBC'],
+  ['Medical Room','TBC','TBC'],
+  ['Prayer Room','TBC','TBC'],
+  ['Registration','TBC','TBC'],
+  ['Speaker Check-in','TBC','TBC'],
+  ['VIP Entrance','TBC','TBC'],
+  ['VIP Lounge / Majlis','TBC','TBC']
+];
+
+const TOP10S = {
+  'Top 10 Critical Checks': [
+    'Medical room location confirmed and shared',
+    'Security escalation route confirmed',
+    'Registration escalation POC confirmed',
+    'VIP movement route confirmed',
+    'Speaker check-in and holding flow confirmed',
+    'WiFi details tested before doors open',
+    'Lost & Found location confirmed',
+    'Organizer office / command centre confirmed',
+    'Daily opening and closing timings confirmed',
+    'POC list reviewed with track leads'
+  ],
+  'Top 10 Locations to Know': [
+    'Registration',
+    'Organizer Office / Command Centre',
+    'Medical Room',
+    'Lost & Found',
+    'Speaker Check-in',
+    'Main Stage',
+    'VIP Entrance',
+    'VIP Lounge / Majlis',
+    'Prayer Room',
+    'Staff Entrance'
+  ],
+  'Top 10 Event-Day Escalations': [
+    'Badge / access issue',
+    'VIP arrival / movement issue',
+    'Speaker late arrival',
+    'Stage timing change',
+    'Security incident',
+    'Medical incident',
+    'Internet / connectivity issue',
+    'Wayfinding confusion',
+    'Catering / hospitality issue',
+    'Transport / shuttle issue'
+  ]
+};
+
+const FINAL_STATS = [
+  ['TBC','Speakers','span-3'],
+  ['TBC','Investors / VIPs','span-3'],
+  ['TBC','Sponsors / Partners','span-3'],
+  ['TBC','Exhibitors / Startups','span-3'],
+  ['TBC','Stages','span-4'],
+  ['TBC','Attendees','span-4'],
+  ['TBC','Team POCs','span-4']
+];
+
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function lineRows(text){
+  return text.trim().split('\n').filter(Boolean).map(line=>{
+    const parts=line.split(/\s+—\s+|\s+:\s+|\s+-\s+/);
+    const label=parts.shift()||line;
+    const value=parts.length?parts.join(' — '):'TBC';
+    return `<li class="row"><span class="label">${esc(label)}</span><span class="vals"><span class="pill">${esc(value)}</span></span><button class="chip" data-copy="${esc(value)}">Copy</button></li>`;
+  }).join('');
+}
+function detail(title, body, danger=false){
+  return `<details class="${danger?'danger':''}"><summary><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 6l6 6-6 6"/></svg></span>${esc(title)}</summary><div class="panel"><ul class="list">${body}</ul></div></details>`;
+}
+function renderPocs(){
+  document.getElementById('pocsAcc').innerHTML = POC_META.map(([key,title,danger])=>detail(title,lineRows(POCS[key]||''),danger)).join('');
+}
+function renderAreas(){
+  const tb=document.querySelector('#areasTable tbody');
+  tb.innerHTML=AREAS_DATA.sort((a,b)=>a[0].localeCompare(b[0])).map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+}
+function renderTop(){
+  const stats = `<div class="stats-grid">${FINAL_STATS.map(([num,lbl,span])=>`<div class="stat ${span}"><div class="knum">${esc(num)}</div><div class="lbl">${esc(lbl)}</div></div>`).join('')}</div>`;
+  const lists = Object.entries(TOP10S).map(([title,items])=>detail(title,`<ol class="top10">${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ol>`)).join('');
+  document.getElementById('topAcc').innerHTML = lists + detail('Quick Stats', stats);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hide',p.id!==id));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
+  document.getElementById('toolbar').style.display=id==='areas'?'none':'flex';
+}
+window.addEventListener('hashchange',()=>showPage(location.hash.replace('#','')||'pocs'));
+document.getElementById('expandAll').onclick=()=>document.querySelectorAll('details').forEach(d=>d.open=true);
+document.getElementById('collapseAll').onclick=()=>document.querySelectorAll('details').forEach(d=>d.open=false);
+document.body.addEventListener('click',e=>{if(e.target.matches('.chip')){navigator.clipboard?.writeText(e.target.dataset.copy||'');e.target.textContent='Copied';e.target.classList.add('good');setTimeout(()=>{e.target.textContent='Copy';e.target.classList.remove('good')},900)}});
+document.getElementById('searchAreas').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#areasTable tbody tr').forEach(tr=>tr.classList.toggle('off',!tr.textContent.toLowerCase().includes(q)));});
+renderPocs();renderAreas();renderTop();showPage(location.hash.replace('#','')||'pocs');
+</script>
+</body>
+</html>
